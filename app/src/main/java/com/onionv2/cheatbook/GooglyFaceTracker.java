@@ -1,28 +1,13 @@
-/*
- * Copyright (C) The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package com.onionv2.cheatbook;
 
-import android.content.Context;
+
 import android.graphics.PointF;
-import android.os.Debug;
+
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 
 import com.google.android.gms.vision.Tracker;
@@ -39,6 +24,9 @@ class GooglyFaceTracker extends Tracker<Face> {
     private Map<Integer, PointF> mPreviousProportions = new HashMap<>();
     private boolean mPreviousIsLeftOpen = true;
     private boolean mPreviousIsRightOpen = true;
+    private StatusView statusView;
+
+
 
 
 
@@ -47,7 +35,7 @@ class GooglyFaceTracker extends Tracker<Face> {
     // Methods
     //==============================================================================================
 
-    GooglyFaceTracker(){}
+    GooglyFaceTracker(StatusView st){this.statusView = st;}
 
 
 
@@ -57,8 +45,8 @@ class GooglyFaceTracker extends Tracker<Face> {
 
         updatePreviousProportions(face);
 
-        PointF leftPosition = getLandmarkPosition(face, Landmark.LEFT_EYE);
-        PointF rightPosition = getLandmarkPosition(face, Landmark.RIGHT_EYE);
+        boolean previousBoth = mPreviousIsLeftOpen && mPreviousIsRightOpen;
+
 
         float leftOpenScore = face.getIsLeftEyeOpenProbability();
         boolean isLeftOpen;
@@ -79,9 +67,13 @@ class GooglyFaceTracker extends Tracker<Face> {
         }
 
 
-        if(isLeftOpen && isRightOpen){setStatus("Both open");}
-        if(!isLeftOpen && isRightOpen){setStatus("Left open");}
-        if(isLeftOpen && !isRightOpen){setStatus("Right open");}
+
+
+
+
+        if(isLeftOpen && isRightOpen ){ statusView.setStatus("Both open", "#88E188"); }
+        if(!isLeftOpen && isRightOpen && previousBoth){ statusView.setStatus("Left open", "#88E188"); }
+        if(isLeftOpen && !isRightOpen && previousBoth){ statusView.setStatus("Right open", "#88E188"); }
 
 
 
@@ -95,28 +87,12 @@ class GooglyFaceTracker extends Tracker<Face> {
 
     @Override
     public void onMissing(FaceDetector.Detections<Face> detectionResults) {
-        setStatus("Nothing detected");
+        statusView.setStatus("Nothing detected", "#B22222");
     }
 
 
 
 
-    //==============================================================================================
-    // Private
-    //==============================================================================================
-
-
-
-    private void setStatus(final String text){
-        new Handler(Looper.getMainLooper()).post(new Runnable(){
-            @Override
-            public void run() {
-                CameraActivity.status.setText(text);
-            }
-        });
-
-
-    }
 
     private void updatePreviousProportions(Face face) {
         for (Landmark landmark : face.getLandmarks()) {
@@ -127,24 +103,6 @@ class GooglyFaceTracker extends Tracker<Face> {
         }
     }
 
-    /**
-     * Finds a specific landmark position, or approximates the position based on past observations
-     * if it is not present.
-     */
-    private PointF getLandmarkPosition(Face face, int landmarkId) {
-        for (Landmark landmark : face.getLandmarks()) {
-            if (landmark.getType() == landmarkId) {
-                return landmark.getPosition();
-            }
-        }
 
-        PointF prop = mPreviousProportions.get(landmarkId);
-        if (prop == null) {
-            return null;
-        }
 
-        float x = face.getPosition().x + (prop.x * face.getWidth());
-        float y = face.getPosition().y + (prop.y * face.getHeight());
-        return new PointF(x, y);
-    }
 }

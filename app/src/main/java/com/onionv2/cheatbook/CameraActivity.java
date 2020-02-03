@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,11 @@ public class CameraActivity extends AppCompatActivity  {
 
     private CameraSource mCameraSource = null;
     private boolean mIsFrontFacing = true;
-    static TextView status;
+
+    StatusView statusView;
+
+
+
 
 
 
@@ -48,10 +53,12 @@ public class CameraActivity extends AppCompatActivity  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        status = findViewById(R.id.status);
 
 
 
+
+        statusView = findViewById(R.id.statusView);
+        statusView.setup();
 
 
         if (savedInstanceState != null) {
@@ -66,6 +73,8 @@ public class CameraActivity extends AppCompatActivity  {
         } else {
             requestCameraPermission();
         }
+
+
 
 
 
@@ -181,7 +190,7 @@ public class CameraActivity extends AppCompatActivity  {
                 .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
                 .setTrackingEnabled(true)
                 .setMode(FaceDetector.FAST_MODE)
-                .setProminentFaceOnly(mIsFrontFacing)
+                .setProminentFaceOnly(true)
                 .setMinFaceSize(mIsFrontFacing ? 0.35f : 0.15f)
                 .build();
 
@@ -189,7 +198,7 @@ public class CameraActivity extends AppCompatActivity  {
 
 
 
-        Tracker<Face> tracker = new GooglyFaceTracker();
+        Tracker<Face> tracker = new GooglyFaceTracker(statusView);
         processor = new LargestFaceFocusingProcessor.Builder(detector, tracker).build();
 
 
@@ -243,6 +252,7 @@ public class CameraActivity extends AppCompatActivity  {
             mCameraSource.start();
         } catch (IOException e) {
             e.printStackTrace();
+            mCameraSource.release();
         }
 
 
