@@ -40,7 +40,6 @@ public class GridActivity extends AppCompatActivity {
 
 
     private ArrayList<Uri> images;
-    private ProgressDialog pDialog;
     private GalleryAdapter mAdapter;
     private RecyclerView recyclerView;
 
@@ -70,7 +69,7 @@ public class GridActivity extends AppCompatActivity {
 
         recyclerView =  findViewById(R.id.recycler_view);
 
-        pDialog = new ProgressDialog(this);
+
         images = new ArrayList<>();
         mAdapter = new GalleryAdapter(getApplicationContext(), images);
 

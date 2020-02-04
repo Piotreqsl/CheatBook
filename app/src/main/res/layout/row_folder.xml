@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview_id"
+    android:clickable="true"
+
+
+    android:layout_margin="6dp"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/iconSingle"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Fridge"
+            android:textColor="#000"
+            android:id="@+id/textSingle"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Fridge"
+            android:textColor="#d3d3d3"
+            android:id="@+id/subtextSingle"
+            android:textSize="10sp"
+            android:layout_marginTop="10dp"/>
+
+
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
