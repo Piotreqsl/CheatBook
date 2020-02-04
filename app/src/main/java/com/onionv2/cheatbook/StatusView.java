@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.view.ViewCompat;
+import androidx.viewpager.widget.ViewPager;
 
 
 public class StatusView extends RelativeLayout {
@@ -20,7 +21,9 @@ public class StatusView extends RelativeLayout {
     private String previousText = "Nothing detected";
     private boolean counting = false;
     Handler handler = new Handler();
-    private CheatView cheatView;
+    private ViewPager cheatView;
+    public static int position;
+    private int size;
 
 
     public StatusView(Context context) {
@@ -60,9 +63,11 @@ public class StatusView extends RelativeLayout {
     }
 
 
-    public void setup(CheatView ch){
+    public void setup(ViewPager ch, int pos, int size){
 
         this.cheatView = ch;
+        this.position = pos;
+        this.size = size;
         status.setVisibility(VISIBLE);
         status.setText("Nothing detected");
         status.setBackgroundColor(Color.parseColor("#B22222"));
@@ -81,8 +86,23 @@ public class StatusView extends RelativeLayout {
                 counting = false;
                 Log.d("zmiana ###", eye);
 
-                if(eye.equals("Right open")) cheatView.loadNext();
-                if(eye.equals("Left open")) cheatView.loadPrevious();
+                if(eye.equals("Right open")) {
+
+                    if (position == size -1) position =0;
+                    else position = position +1;
+
+                    cheatView.setCurrentItem(position);
+
+                }
+                if(eye.equals("Left open")) {
+
+                    if (position == 0) position = size -1;
+                    else position = position - 1;
+
+
+                    cheatView.setCurrentItem(position);
+
+                }
             }
         }, 1000);
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.app.Activity;
@@ -15,6 +16,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -42,7 +44,7 @@ public class CameraActivity extends AppCompatActivity  {
     private boolean mIsFrontFacing = true;
 
     StatusView statusView;
-    CheatView cheatView;
+
 
     List<Uri> images;
     int position;
@@ -62,11 +64,38 @@ public class CameraActivity extends AppCompatActivity  {
         position = b.getInt("position");
 
 
-        cheatView = findViewById(R.id.cheatView);
-        cheatView.setup(images, position);
+
+
+        final ViewPager viewPager = findViewById(R.id.view_pager);
+        final CheatPagerAdapter adapter = new CheatPagerAdapter(CameraActivity.this, images);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(position, false);
 
         statusView = findViewById(R.id.statusView);
-        statusView.setup(cheatView);
+        statusView.setup(viewPager, position, images.size());
+
+        //Sychro with statusView
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                statusView.position = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
 
 
 
