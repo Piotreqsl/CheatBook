@@ -20,6 +20,7 @@ public class StatusView extends RelativeLayout {
     private String previousText = "Nothing detected";
     private boolean counting = false;
     Handler handler = new Handler();
+    private CheatView cheatView;
 
 
     public StatusView(Context context) {
@@ -59,7 +60,9 @@ public class StatusView extends RelativeLayout {
     }
 
 
-    public void setup(){
+    public void setup(CheatView ch){
+
+        this.cheatView = ch;
         status.setVisibility(VISIBLE);
         status.setText("Nothing detected");
         status.setBackgroundColor(Color.parseColor("#B22222"));
@@ -77,6 +80,9 @@ public class StatusView extends RelativeLayout {
                 setStatus(eye, "#d3d3d3");
                 counting = false;
                 Log.d("zmiana ###", eye);
+
+                if(eye.equals("Right open")) cheatView.loadNext();
+                if(eye.equals("Left open")) cheatView.loadPrevious();
             }
         }, 1000);
 

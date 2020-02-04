@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="huj"
+        android:text="Test"
         android:textAlignment="center"
         android:textSize="36sp" />
 

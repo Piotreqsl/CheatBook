@@ -2,6 +2,7 @@ package com.onionv2.cheatbook;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -12,13 +13,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -31,6 +30,7 @@ import com.google.android.gms.vision.face.FaceDetector;
 import com.google.android.gms.vision.face.LargestFaceFocusingProcessor;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class CameraActivity extends AppCompatActivity  {
@@ -42,7 +42,10 @@ public class CameraActivity extends AppCompatActivity  {
     private boolean mIsFrontFacing = true;
 
     StatusView statusView;
+    CheatView cheatView;
 
+    List<Uri> images;
+    int position;
 
 
 
@@ -54,19 +57,26 @@ public class CameraActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        Bundle b = this.getIntent().getExtras();
+        images = (List<Uri>) b.getSerializable("images");
+        position = b.getInt("position");
 
 
+        cheatView = findViewById(R.id.cheatView);
+        cheatView.setup(images, position);
 
         statusView = findViewById(R.id.statusView);
-        statusView.setup();
+        statusView.setup(cheatView);
+
+
+
+
 
 
         if (savedInstanceState != null) {
             mIsFrontFacing = savedInstanceState.getBoolean("IsFrontFacing");
         }
 
-        // Check for the camera permission before accessing the camera.  If the
-        // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (rc == PackageManager.PERMISSION_GRANTED) {
             createCameraSource();
