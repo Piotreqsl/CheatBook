@@ -42,10 +42,15 @@ public class MainActivity extends AppCompatActivity {
         subjectHelper = new SubjectHelper(this);
 
 
+
+
         Cursor cursor = subjectHelper.getData();
         while(cursor.moveToNext()){
             listItem.add(cursor.getString(1) + "__,__" + cursor.getInt(2));
         }
+
+
+
 
 
 
@@ -60,11 +65,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         toolbarHome = findViewById(R.id.toolbar_home);
-        setSupportActionBar(toolbarHome);
-        recyclerHome = findViewById(R.id.recycler_home);
-
         toolbarHome.setTitle("CheatBook");
         toolbarHome.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbarHome);
+
+        recyclerHome = findViewById(R.id.recycler_home);
+
+
 
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
@@ -75,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerHome.addOnItemTouchListener(new HomeAdapter.RecyclerTouchListener(getApplicationContext(), recyclerHome, new GalleryAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), "toast dla" + listItem.get(position), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, SubjectCheats.class);
+                intent.putExtra("subj", listItem.get(position).split("__,__")[0]);
+                startActivity(intent);
             }
 
             @Override

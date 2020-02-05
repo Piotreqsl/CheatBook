@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insertCheat(String subject, String uris){
+    public long insertCheat(String subject, String title, String uris){
         SQLiteDatabase db = this.getWritableDatabase();
 
 
@@ -51,6 +52,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         values.put(Cheat.COLUMN_SUBJECT, subject);
         values.put(Cheat.COLUMN_URIS, uris);
+        values.put(Cheat.COLUMN_TITLE, title);
 
         long id = db.insert(Cheat.TABLE_NAME, null, values);
 
@@ -73,6 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cheat cheat = new Cheat(
                 cursor.getInt(cursor.getColumnIndex(Cheat.COLUMN_ID)),
+                cursor.getString(cursor.getColumnIndex(Cheat.COLUMN_TITLE)),
                 cursor.getString(cursor.getColumnIndex(Cheat.COLUMN_SUBJECT)),
                 cursor.getString(cursor.getColumnIndex(Cheat.COLUMN_URIS)),
                 cursor.getString(cursor.getColumnIndex(Cheat.COLUMN_TIMESTAMP))
@@ -84,11 +87,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public List<Cheat> getAllNotes() {
+    public List<Cheat> getCheatsBySubject(String  subject) {
         List<Cheat> cheats = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + Cheat.TABLE_NAME + " ORDER BY " +
+        String selectQuery = "SELECT  * FROM " + Cheat.TABLE_NAME + " WHERE " + Cheat.COLUMN_SUBJECT + " = '" + subject + "'" +   " ORDER BY " +
                 Cheat.COLUMN_TIMESTAMP + " DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -99,6 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 Cheat note = new Cheat();
                 note.setId(cursor.getInt(cursor.getColumnIndex(Cheat.COLUMN_ID)));
+                note.setTitle(cursor.getString(cursor.getColumnIndex(Cheat.COLUMN_TITLE)));
                 note.setSubject(cursor.getString(cursor.getColumnIndex(Cheat.COLUMN_SUBJECT)));
                 note.setTimestamp(cursor.getString(cursor.getColumnIndex(Cheat.COLUMN_TIMESTAMP)));
                 note.setUris(cursor.getString(cursor.getColumnIndex(Cheat.COLUMN_URIS)));
@@ -123,17 +127,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Cheat.COLUMN_URIS, cheat.getUris());
         values.put(Cheat.COLUMN_SUBJECT, cheat.getSubject());
+        values.put(Cheat.COLUMN_TITLE, cheat.getTitle());
 
         // updating row
         return db.update(Cheat.TABLE_NAME, values, Cheat.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(cheat.getId())});
     }
 
-    public void deleteNote(Cheat note) {
+    public void deleteCheat(int id, String timestamp){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(Cheat.TABLE_NAME, Cheat.COLUMN_ID + " = ?",
-                new String[]{String.valueOf(note.getId())});
-        db.close();
+        String query = "DELETE FROM " + Cheat.TABLE_NAME + " WHERE " + Cheat.COLUMN_ID+ " = '" + id + "'" + " AND " + Cheat.COLUMN_TIMESTAMP + " = '" + timestamp + "'";
+        db.execSQL(query);
     }
 
 

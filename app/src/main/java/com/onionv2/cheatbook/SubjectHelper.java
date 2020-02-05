@@ -86,6 +86,12 @@ public class SubjectHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    public void decrementSubject(String subject) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE subjects SET count = count - 1 WHERE subject = '" +  subject + "'";
+        db.execSQL(query);
+    }
+
 
 
 

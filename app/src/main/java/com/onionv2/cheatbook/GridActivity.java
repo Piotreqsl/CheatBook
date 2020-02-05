@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class GridActivity extends AppCompatActivity {
@@ -40,6 +41,11 @@ public class GridActivity extends AppCompatActivity {
 
 
     private ArrayList<Uri> images;
+    private String subject;
+    private String title;
+    private String timestamp;
+    private int id;
+
     private GalleryAdapter mAdapter;
     private RecyclerView recyclerView;
 
@@ -53,25 +59,63 @@ public class GridActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid);
 
+        images = new ArrayList<>();
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+
+        Bundle bundle = getIntent().getExtras();
+        subject = bundle.getString("subj");
+        title = bundle.getString("title");
+        id = bundle.getInt("id");
+        timestamp = bundle.getString("timestamp");
 
 
-        fab = findViewById(R.id.addFab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGallery();
+        int counter = 0;
+
+        for(int i = 0; i < bundle.getString("uris").split("__,__").length; i++ ){
+            File file = new File(bundle.getString("uris").split("__,__")[i]);
+
+            if(file.exists()){
+            images.add(Uri.parse(bundle.getString("uris").split("__,__")[i]));
             }
-        });
+            else{
+                counter++;
+            }
+        }
+
+        if(counter != 0){
+            StringBuilder stringBuilder = new StringBuilder();
+            for(int i =0; i < images.size(); i++){
+                stringBuilder.append(images.get(i) + "__,__");
+            }
+
+
+            Cheat fixedCheat = new Cheat();
+            fixedCheat.setTitle(title);
+            fixedCheat.setUris(stringBuilder.toString());
+            fixedCheat.setSubject(subject);
+            fixedCheat.setId(id);
+            fixedCheat.setTimestamp(timestamp);
+
+            databaseHelper.updateCheat(fixedCheat);
+
+        }
+
+
+
 
 
         Toolbar toolbar =  findViewById(R.id.toolbar);
+        toolbar.setTitle(subject + ": " + title);
         setSupportActionBar(toolbar);
+
+
+        mAdapter = new GalleryAdapter(getApplicationContext(), images);
 
         recyclerView =  findViewById(R.id.recycler_view);
 
 
-        images = new ArrayList<>();
-        mAdapter = new GalleryAdapter(getApplicationContext(), images);
+
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -94,83 +138,16 @@ public class GridActivity extends AppCompatActivity {
             @Override
             public void onLongClick(View view, int position) {
 
-                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    v.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
-                    images.remove(position);
-                    mAdapter.notifyDataSetChanged();
-
-                } else {
-                    //deprecated in API 26
-                    v.vibrate(150);
-                    images.remove(position);
-                    mAdapter.notifyDataSetChanged();
-                }
             }
         }));
 
     }
 
-    //Opens image picker
-    private void openGallery(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"Select Picture"), PICK_IMAGES);
-    }
 
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGES){
 
 
-            ClipData clipData = data.getClipData();
-
-
-            if(clipData != null) {
-
-                for (int i = 0; i < clipData.getItemCount(); i++) {
-                    ClipData.Item item = clipData.getItemAt(i);
-                    Uri uri = getImagePath(item.getUri());
-
-                    images.add(uri);
-                }
-
-            }else if (data.getData() != null){
-
-                images.add(getImagePath(data.getData()));
-            }
-
-            mAdapter.notifyDataSetChanged();
-
-        }
-
-    }
-
-
-
-    private Uri getImagePath(Uri uri){
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
-        cursor.close();
-
-        cursor = getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
-
-        return Uri.parse(path);
-    }
 
 
 }

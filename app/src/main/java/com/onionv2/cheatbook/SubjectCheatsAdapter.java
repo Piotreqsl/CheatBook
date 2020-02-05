@@ -1,87 +1,79 @@
 package com.onionv2.cheatbook;
 
 import android.content.Context;
-import android.media.Image;
-
-import android.net.Uri;
-import android.os.Debug;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
-import java.io.File;
-import java.util.Collections;
 import java.util.List;
 
+public class SubjectCheatsAdapter extends RecyclerView.Adapter<SubjectCheatsAdapter.MyViewHolder> {
 
-/**
- * Created by Lincoln on 31/03/16.
- */
-
-public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
-
-    public static List<Uri> images;
-    private Context mContext;
-
-    @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(images, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
-
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-        images.remove(position);
-        notifyItemRemoved(position);
-    }
+    private Context context;
+    private List<Cheat> cheats;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public ImageView thumbnail;
+        public TextView Title, Date, numOfImgs;
+
+        public RelativeLayout viewBackground, viewForeground;
 
         public MyViewHolder(View view) {
             super(view);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
+            Title = view.findViewById(R.id.CheatTitle);
+            Date = view.findViewById(R.id.CheatDate);
+            numOfImgs = view.findViewById(R.id.numOfImgs);
+
+            viewBackground = view.findViewById(R.id.view_background);
+            viewForeground = view.findViewById(R.id.view_foreground);
         }
     }
 
 
-    public GalleryAdapter(Context context, List<Uri> images) {
-        mContext = context;
-        this.images = images;
-        Log.d("hhhh", String.valueOf(images));
+    public SubjectCheatsAdapter(Context context, List<Cheat> cartList) {
+        this.context = context;
+        this.cheats = cartList;
+
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.gallery_thumbnail, parent, false);
+                .inflate(R.layout.subject_cheat_item, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Uri image = images.get(position);
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        final Cheat cheat = cheats.get(position);
 
-        Glide.with(mContext).load(new File(image.getPath()))
-                .thumbnail(0.5f)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.thumbnail);
+        holder.Title.setText(cheat.getTitle());
+        holder.Date.setText(cheat.getTimestamp().substring(0,10));
+        holder.numOfImgs.setText(cheat.getUris().split("__,__").length + " items");
+
     }
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return cheats.size();
+    }
+
+    public void removeItem(int position) {
+        cheats.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Cheat item, int position) {
+        cheats.add(position, item);
+
+
+        notifyItemInserted(position);
     }
 
     public interface ClickListener {
