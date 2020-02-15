@@ -13,17 +13,47 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:fontFamily="@font/field"
-        android:textColor="@color/colorPrimary"/>
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/fieldregular"
+            android:text="book"
+            android:textSize="42sp"
+            android:textColor="@color/colorBlack"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/textView4"
+            />
 
-    <androidx.recyclerview.widget.RecyclerView
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/fieldfat"
+            android:text="Cheat"
+            android:textSize="42sp"
+            android:textColor="@color/colorBlack"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            />
+
+        <ImageButton
+            android:id="@+id/workshop"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/shop"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackgroundBorderless"
+
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/recycler_home"
         android:layout_width="match_parent"
@@ -31,6 +61,9 @@
         android:scrollbars="vertical"
         android:layout_below="@id/textView3"
         />
+
+
+
 
     </RelativeLayout>
 

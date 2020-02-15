@@ -8,6 +8,8 @@
     <color name="colorGrey">#D6D6ED</color>
     <color name="colorWhite">#F5F4F9</color>
 
+    <color name="transparent">#80000000</color>
+
     <color name="bg_row_background">#fa315b</color>
     <color name="item_name">#535353</color>
     <color name="description">#a9a9a9</color>
