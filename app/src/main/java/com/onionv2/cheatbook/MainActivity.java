@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         Cursor cursor = subjectHelper.getData();
         while(cursor.moveToNext()){
             listItem.add(cursor.getString(1) + "__,__" + cursor.getInt(2));
