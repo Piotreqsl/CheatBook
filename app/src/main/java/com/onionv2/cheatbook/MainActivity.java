@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     Button grid;
     final int callbackPerm = 2;
 
-    Toolbar toolbarHome;
+
     RecyclerView recyclerHome;
     ArrayList<String> listItem;
     SubjectHelper subjectHelper;
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         listItem = new ArrayList<String>();
         subjectHelper = new SubjectHelper(this);
+
 
 
 
@@ -64,10 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     callbackPerm);
         }
 
-        toolbarHome = findViewById(R.id.toolbar_home);
-        toolbarHome.setTitle("CheatBook");
-        toolbarHome.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbarHome);
+
 
         recyclerHome = findViewById(R.id.recycler_home);
 
