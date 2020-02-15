@@ -61,7 +61,6 @@ public class SubjectHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2, "Geography");contentValues.put("count", 0); db.insert(TABLE_NAME, null, contentValues);
         contentValues.put(COL_2, "Chemistry");contentValues.put("count", 0); db.insert(TABLE_NAME, null, contentValues);
         contentValues.put(COL_2, "Religion");contentValues.put("count", 0); db.insert(TABLE_NAME, null, contentValues);
-        contentValues.put(COL_2, "Drama");contentValues.put("count", 0); db.insert(TABLE_NAME, null, contentValues);
         contentValues.put(COL_2, "Astronomy");contentValues.put("count", 0); db.insert(TABLE_NAME, null, contentValues);
         contentValues.put(COL_2, "Others");contentValues.put("count", 0); db.insert(TABLE_NAME, null, contentValues);
 

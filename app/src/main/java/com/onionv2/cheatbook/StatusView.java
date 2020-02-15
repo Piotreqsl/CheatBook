@@ -88,17 +88,17 @@ public class StatusView extends RelativeLayout {
 
                 if(eye.equals("Right open")) {
 
-                    if (position == size -1) position =0;
-                    else position = position +1;
+                    if (position == 0) position = size -1;
+                    else position = position - 1;
+
 
                     cheatView.setCurrentItem(position);
 
                 }
                 if(eye.equals("Left open")) {
 
-                    if (position == 0) position = size -1;
-                    else position = position - 1;
-
+                    if (position == size -1) position =0;
+                    else position = position +1;
 
                     cheatView.setCurrentItem(position);
 
