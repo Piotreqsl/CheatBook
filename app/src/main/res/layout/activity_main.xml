@@ -41,17 +41,40 @@
 
         <ImageButton
             android:id="@+id/workshop"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/shop"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="15dp"
             android:scaleType="fitCenter"
             android:background="?attr/selectableItemBackgroundBorderless"
 
             />
+
+        <ImageButton
+            android:id="@+id/add"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/user"
+            android:layout_toLeftOf="@id/workshop"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:scaleType="fitCenter"
+            android:background="?attr/selectableItemBackgroundBorderless"
+
+            />
+
+        <SearchView
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/textView3"
+            android:layout_marginTop="10dp"
+            />
+
+
 
         <androidx.recyclerview.widget.RecyclerView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -59,7 +82,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
-        android:layout_below="@id/textView3"
+        android:layout_below="@id/search_bar"
+            android:layout_marginTop="10dp"
         />
 
 

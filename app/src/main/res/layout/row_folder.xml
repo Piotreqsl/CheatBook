@@ -7,47 +7,72 @@
     android:clickable="true"
 
 
-    android:layout_margin="6dp"
-    app:cardCornerRadius="4dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="20dp">
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:layout_height="200dp"
         android:layout_gravity="center"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@color/colorGrey">
 
-        <ImageView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/menuVertical"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                app:srcCompat="@drawable/menu_vertical"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="19dp"/>
+
+
+            <ImageView
             android:id="@+id/iconSingle"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
+             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Fridge"
-            android:textColor="#000"
-            android:id="@+id/textSingle"
-            android:textSize="14sp"
-            android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Fridge"
-            android:textColor="#d3d3d3"
+
+            <TextView
+                android:id="@+id/textSingle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iconSingle"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/fieldbold"
+                android:text="Fridge"
+                android:textColor="@color/colorBlack"
+                android:textSize="32sp" />
+
+            <TextView
             android:id="@+id/subtextSingle"
-            android:textSize="10sp"
-            android:layout_marginTop="10dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textSingle"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="4dp"
+            android:text="Fridge"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
+            android:fontFamily="@font/fieldlight"/>
 
-
-
-
+    </RelativeLayout>
     </LinearLayout>
+
+
 
 </androidx.cardview.widget.CardView>
