@@ -7,6 +7,16 @@
     android:fitsSystemWindows="true"
     tools:context="com.onionv2.cheatbook.GridActivity">
 
+    <com.github.florent37.shapeofview.shapes.ArcView
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:elevation="4dp"
+        app:shape_arc_cropDirection="outside"
+        app:shape_arc_height="20dp"
+        app:shape_arc_position="bottom"
+        >
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +32,8 @@
             />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    </com.github.florent37.shapeofview.shapes.ArcView>
 
 
     <include layout="@layout/content_main" />
