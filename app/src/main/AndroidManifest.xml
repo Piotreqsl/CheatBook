@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity_working"></activity>
+        <activity android:name=".ShapesTest"></activity>
+        <activity android:name=".activity_test" />
+        <activity android:name=".activity_working" />
         <activity android:name=".CreateCheatStepTwo" />
         <activity
             android:name=".CreateCheatStepOne"
