@@ -9,6 +9,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/field</item>
+        <item name="android:editTextColor">@android:color/black</item>//tu kkolor searcha
+        <item name="android:textColorSecondary">@android:color/black</item>//tu kolor ikonki
     </style>
 
 </resources>
