@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shape_arc_height="26dp"
+        app:shape_arc_height="27dp"
         app:shape_arc_position="bottom">
 
         <androidx.appcompat.widget.AppCompatImageView
