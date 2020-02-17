@@ -226,7 +226,7 @@ public class CameraActivity extends AppCompatActivity  {
                 .setLandmarkType(FaceDetector.ALL_LANDMARKS)
                 .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
                 .setTrackingEnabled(true)
-                .setMode(FaceDetector.FAST_MODE)
+                .setMode(FaceDetector.ACCURATE_MODE)
                 .setProminentFaceOnly(true)
                 .setMinFaceSize(mIsFrontFacing ? 0.35f : 0.15f)
                 .build();

@@ -11,7 +11,7 @@
         android:layout_width="150dp"
         android:layout_height="100dp"
         android:elevation="4dp"
-        app:shape_arc_cropDirection="outside"
+
         app:shape_arc_height="20dp"
         app:shape_arc_position="bottom"
         >

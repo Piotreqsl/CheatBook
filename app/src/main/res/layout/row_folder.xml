@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview_id"
-    android:clickable="true"
+
 
 
     android:layout_margin="8dp"
@@ -16,21 +16,25 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
-        android:background="@color/colorGrey">
+        android:background="@color/colorGrey"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
 
+            >
             <ImageView
                 android:id="@+id/menuVertical"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                app:srcCompat="@drawable/menu_vertical"
-                android:layout_alignParentRight="true"
+                android:focusable="false"
+
                 android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="19dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginTop="19dp"/>
+                app:srcCompat="@drawable/menu_vertical" />
 
 
             <ImageView
@@ -70,7 +74,9 @@
             android:textSize="18sp"
             android:fontFamily="@font/fieldlight"/>
 
-    </RelativeLayout>
+
+
+        </RelativeLayout>
     </LinearLayout>
 
 
