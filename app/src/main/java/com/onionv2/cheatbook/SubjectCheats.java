@@ -49,15 +49,12 @@ public class SubjectCheats extends AppCompatActivity implements RecyclerItemTouc
 
 
 
-        toolbarSubject= findViewById(R.id.toolbar_subject);
-        toolbarSubject.setTitle(subject);
-        toolbarSubject.setTitleTextColor(Color.WHITE);
-        setSupportActionBar(toolbarSubject);
+
 
 
 
         recyclerView = findViewById(R.id.recycler_view_subject);
-        coordinatorLayout = findViewById(R.id.coordinator_subject);
+
         cheatList = new ArrayList<>();
 
         subjectCheatsAdapter = new SubjectCheatsAdapter(this, cheatList);

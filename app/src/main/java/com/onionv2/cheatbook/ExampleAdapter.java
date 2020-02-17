@@ -1,78 +1,93 @@
 package com.onionv2.cheatbook;
 
-import android.content.Context;
-import android.icu.text.CaseMap;
-import android.os.Debug;
-import android.util.Log;
-import android.view.GestureDetector;
+
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.onionv2.cheatbook.R;
 
 import java.util.ArrayList;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FolderView>  {
 
+public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
+    private ArrayList<String> mExampleList;
+    private OnItemClickListener mListener;
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
 
-    public interface ClickListener {
-        void onClick(View view, int position);
-
-        void onDotsClick(View view, int position);
+        void onDotsClick(int position);
     }
 
-    ArrayList<String> subjects;
-
-    public HomeAdapter(ArrayList<String> str){
-        this.subjects = str;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 
-
-
-
-    public class FolderView extends RecyclerView.ViewHolder{
-
-        ImageView imageView, dots;
+    public static class ExampleViewHolder extends RecyclerView.ViewHolder {
+        ImageView imageView;
+        ImageButton dots;
         TextView subjectText, countText;
 
 
-        public FolderView(@NonNull View itemView) {
+        public ExampleViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             imageView = itemView.findViewById(R.id.iconSingle);
             subjectText = itemView.findViewById(R.id.textSingle);
             countText = itemView.findViewById(R.id.subtextSingle);
             dots = itemView.findViewById(R.id.menuVertical);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+            dots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onDotsClick(position);
+
+                        }
+                    }
+                }
+            });
 
         }
     }
 
-
-
-
-    @NonNull
-    @Override
-    public FolderView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_folder, parent, false);
-        return new FolderView(view);
+    public ExampleAdapter(ArrayList<String> exampleList) {
+        mExampleList = exampleList;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final FolderView holder, int position) {
+    public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_folder, parent, false);
+        ExampleViewHolder evh = new ExampleViewHolder(view, mListener);
+        return evh;
+    }
+
+    @Override
+    public void onBindViewHolder(ExampleViewHolder holder, int position) {
         //holder.imageView.setImageURI(); Obrazki jebnac customowe
-        String[] parts = subjects.get(position).split("__,__");
+        String[] parts = mExampleList.get(position).split("__,__");
         String subject = parts[0];
 
         holder.subjectText.setText(subject);
@@ -303,65 +318,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.FolderView>  {
 
 
 
-
-
-
-
     }
 
     @Override
     public int getItemCount() {
-        return subjects.size();
-    }
-
-
-
-
-
-
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private GestureDetector gestureDetector;
-        private HomeAdapter.ClickListener clickListener;
-
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final HomeAdapter.ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onDotsClick(child, recyclerView.getChildPosition(child));
-                    }
-                }
-            });
-        }
-
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildPosition(child));
-            }
-            return true;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
+        return mExampleList.size();
     }
 }
-
-

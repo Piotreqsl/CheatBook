@@ -1,6 +1,7 @@
 package com.onionv2.cheatbook;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -11,14 +12,16 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
+
 import java.util.ArrayList;
+import java.util.Collection;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,8 +32,11 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerHome;
     ArrayList<String> listItem;
+    ArrayList<String> helperListItem;
     SubjectHelper subjectHelper;
+    SearchView searchView;
 
+    private ExampleAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         listItem = new ArrayList<String>();
+        helperListItem = new ArrayList<String>();
         subjectHelper = new SubjectHelper(this);
+        searchView = findViewById(R.id.search_bar);
 
 
 
@@ -49,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = subjectHelper.getData();
         while(cursor.moveToNext()){
             listItem.add(cursor.getString(1) + "__,__" + cursor.getInt(2));
+            helperListItem.add(cursor.getString(1) + "__,__" + cursor.getInt(2));
         }
 
 
@@ -69,30 +78,59 @@ public class MainActivity extends AppCompatActivity {
 
 
         recyclerHome = findViewById(R.id.recycler_home);
-
-
-
-
+        mAdapter = new ExampleAdapter(listItem);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerHome.setLayoutManager(gridLayoutManager);
+        recyclerHome.setAdapter(mAdapter);
 
-        recyclerHome.setAdapter(new HomeAdapter(listItem));
-
-        recyclerHome.addOnItemTouchListener(new HomeAdapter.RecyclerTouchListener(getApplicationContext(), recyclerHome, new GalleryAdapter.ClickListener() {
+        mAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View view, int position) {
+            public void onItemClick(int position) {
                 Intent intent = new Intent(MainActivity.this, SubjectCheats.class);
                 intent.putExtra("subj", listItem.get(position).split("__,__")[0]);
                 startActivity(intent);
             }
 
             @Override
-            public void onLongClick(View view, int position) {
+            public void onDotsClick(int position) {
+                Toast.makeText(getApplicationContext(), "hejh", Toast.LENGTH_SHORT).show();
+                Log.d("Hej", "hejejsd");
+
 
             }
-        }));
+        });
 
 
+
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if(s.equals("")){
+                    listItem.clear();
+                    listItem.addAll(helperListItem);
+                    mAdapter.notifyDataSetChanged();
+                }
+
+                else {
+                    Collection<String> filtered = Collections2.filter(helperListItem,
+                            Predicates.containsPattern("(?i)" + s));
+                    listItem.clear();
+                    listItem.addAll(filtered);
+                    mAdapter.notifyDataSetChanged();
+                }
+
+
+                return true;
+            }
+        });
 
         //debug only
 
