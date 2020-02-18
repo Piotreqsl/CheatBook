@@ -24,7 +24,7 @@ import java.util.List;
 
 public class SubjectCheats extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
-    Toolbar toolbarSubject;
+
     public static String subject;
     RecyclerView recyclerView;
     public static CoordinatorLayout coordinatorLayout;
@@ -44,6 +44,7 @@ public class SubjectCheats extends AppCompatActivity implements RecyclerItemTouc
         subject = bundle.getString("subj");
         databaseHelper = new DatabaseHelper(this);
         subjectHelper = new SubjectHelper(this);
+        coordinatorLayout = findViewById(R.id.coordinator_subject);
 
         addFab = findViewById(R.id.addCheatFab);
 
@@ -53,7 +54,7 @@ public class SubjectCheats extends AppCompatActivity implements RecyclerItemTouc
 
 
 
-        recyclerView = findViewById(R.id.recycler_view_subject);
+        recyclerView = findViewById(R.id.recycler_view);
 
         cheatList = new ArrayList<>();
 
@@ -101,19 +102,21 @@ public class SubjectCheats extends AppCompatActivity implements RecyclerItemTouc
 
 
 
-        getCheats();
+        cheatList.addAll(databaseHelper.getCheatsBySubject(subject));
+        subjectCheatsAdapter.notifyDataSetChanged();
+
+
+        if(cheatList.size() == 0 ) Toast.makeText(getApplicationContext(), "No cheats", Toast.LENGTH_SHORT).show();
+
 
     }
 
     public static void getCheats() {
 
+        cheatList.clear();
         cheatList.addAll(databaseHelper.getCheatsBySubject(subject));
         subjectCheatsAdapter.notifyDataSetChanged();
-        if (cheatList.size() == 0){
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout,  "No cheats! Add new by clicking on plus button", Snackbar.LENGTH_LONG);
-            snackbar.show();
-        }
+
 
 
     }

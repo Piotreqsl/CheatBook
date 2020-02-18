@@ -19,20 +19,17 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="false"
-
             >
 
             <ImageButton
                 android:id="@+id/menuVertical"
                 android:layout_width="25dp"
-                android:background="@null"
                 android:layout_height="25dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="19dp"
                 android:layout_marginRight="15dp"
-                android:clickable="true"
+                android:background="@null"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/menu_vertical" />
 
