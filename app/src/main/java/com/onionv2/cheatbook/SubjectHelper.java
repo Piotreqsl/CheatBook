@@ -92,6 +92,22 @@ public class SubjectHelper extends SQLiteOpenHelper {
     }
 
 
+    public void deleteSubject(String subject){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM subjects WHERE subject = '" + subject + "'";
+        db.execSQL(query);
+    }
+
+    public void addSubject(String subject){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_2, subject);contentValues.put("count", 0);
+        db.insert(TABLE_NAME, null, contentValues);
+
+
+    }
+
+
 
 
 }

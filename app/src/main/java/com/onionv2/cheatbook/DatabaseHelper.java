@@ -141,4 +141,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public void deleteCheatBySubject(String subject){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + Cheat.TABLE_NAME + " WHERE " + Cheat.COLUMN_SUBJECT + " = '" + subject + "'";
+        db.execSQL(query);
+    }
+
+
 }

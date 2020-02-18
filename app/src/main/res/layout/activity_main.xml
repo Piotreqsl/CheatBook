@@ -7,6 +7,7 @@
     tools:context=".MainActivity"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    android:id="@+id/coordinator_home"
     android:background="@color/colorWhite">
 
     <RelativeLayout
@@ -92,7 +93,16 @@
             android:layout_marginTop="12dp"
         />
 
-
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButtonMAin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_add_black_24dp" />
 
 
     </RelativeLayout>

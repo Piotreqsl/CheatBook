@@ -1,8 +1,11 @@
 package com.onionv2.cheatbook;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -12,13 +15,24 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
+import com.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
+import com.shreyaspatil.MaterialDialog.interfaces.DialogInterface;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,9 +48,15 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> listItem;
     ArrayList<String> helperListItem;
     SubjectHelper subjectHelper;
+    DatabaseHelper databaseHelper;
+
     SearchView searchView;
+    CoordinatorLayout coordinatorLayout;
+
+    FloatingActionButton addFab;
 
     private ExampleAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +67,11 @@ public class MainActivity extends AppCompatActivity {
         listItem = new ArrayList<String>();
         helperListItem = new ArrayList<String>();
         subjectHelper = new SubjectHelper(this);
+        databaseHelper = new DatabaseHelper(this);
         searchView = findViewById(R.id.search_bar);
+
+        coordinatorLayout = findViewById(R.id.coordinator_home);
+        addFab = findViewById(R.id.floatingActionButtonMAin);
 
 
 
@@ -83,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerHome.setLayoutManager(gridLayoutManager);
         recyclerHome.setAdapter(mAdapter);
 
+
+
         mAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
@@ -92,9 +118,108 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onDotsClick(int position) {
-                Toast.makeText(getApplicationContext(), "hejh", Toast.LENGTH_SHORT).show();
-                Log.d("Hej", "hejejsd");
+            public void onDotsClick(final int position, View v) {
+
+
+                PopupMenu popup = new PopupMenu(MainActivity.this, v);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(MainActivity.this)
+                                .setTitle("Delete?")
+                                .setMessage("Are you sure want to delete this file?")
+                                .setCancelable(false)
+                                .setPositiveButton("Delete", R.drawable.ic_delete, new BottomSheetMaterialDialog.OnClickListener() {
+                                    @Override ///// TUTAJ JEST DELETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                    public void onClick(DialogInterface dialogInterface, int which) {
+
+                                        databaseHelper.deleteCheatBySubject(mAdapter.getSubjectByPos(position));
+                                        subjectHelper.deleteSubject(mAdapter.getSubjectByPos(position));
+
+
+                                        mAdapter.removeItem(position);
+
+
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .setNegativeButton("Cancel", R.drawable.ic_close, new BottomSheetMaterialDialog.OnClickListener() {
+                                    @Override // tutaj jest cancel
+                                    public void onClick(DialogInterface dialogInterface, int which) {
+                                        Toast.makeText(getApplicationContext(), "Cancelled!", Toast.LENGTH_SHORT).show();
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .build();
+
+                        // Show Dialog
+                        mBottomSheetDialog.show();
+
+
+
+
+                        return true;
+                    }
+                });
+
+                popup.show();
+
+
+            }
+        });
+
+
+        addFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+
+                final EditText edittext = new EditText(MainActivity.this);
+                alert.setMessage("Enter Your Message");
+                alert.setTitle("Enter Your Title");
+
+                alert.setView(edittext);
+
+                alert.setPositiveButton("Yes Option", new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(android.content.DialogInterface dialog, int which) {
+
+                        String subject = edittext.getText().toString();
+
+                        if(subject.length() > 0 ){// Dodanie czita
+
+                            subjectHelper.addSubject(subject);
+                            listItem.add(subject + "__,__0");
+                            helperListItem.add(subject + "__,__0");
+
+                            mAdapter.notifyItemInserted(mAdapter.getItemCount()+ 1);
+
+
+                        }
+
+                    }
+                });
+
+                alert.setNegativeButton("No Option", new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(android.content.DialogInterface dialog, int which) {
+
+
+
+                    }
+                });
+
+                alert.show();
+
+
+
+
+
+
 
 
             }

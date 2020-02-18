@@ -17,13 +17,15 @@ import com.onionv2.cheatbook.R;
 
 import java.util.ArrayList;
 
+import javax.security.auth.Subject;
+
 
 public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
     private ArrayList<String> mExampleList;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onDotsClick(int position);
+        void onDotsClick(int position, View v);
 
         void onItemClick(int position);
 
@@ -53,7 +55,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onDotsClick(position);
+                            listener.onDotsClick(position, dots);
 
                         }
                     }
@@ -88,6 +90,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         return evh;
     }
 
+
     @Override
     public void onBindViewHolder(ExampleViewHolder holder, int position) {
         //holder.imageView.setImageURI(); Obrazki jebnac customowe
@@ -97,12 +100,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         holder.subjectText.setText(subject);
         holder.countText.setText(parts[1] + " items");
 
-        holder.dots.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
 
         if (subject.equals("Art")) {
@@ -328,4 +326,16 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
     public int getItemCount() {
         return mExampleList.size();
     }
+
+    public void removeItem(int position) {
+        mExampleList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+
+
+
+
+    public String getSubjectByPos(int i) {return mExampleList.get(i).split("__,__")[0];}
+
 }

@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
@@ -11,6 +11,17 @@
         <item name="android:fontFamily">@font/field</item>
         <item name="android:editTextColor">@android:color/black</item>//tu kkolor searcha
         <item name="android:textColorSecondary">@android:color/black</item>//tu kolor ikonki
+
+
+        <!-- Customize your theme here. --> /// Tuuu do tego dialoga śmiesznego na delete
+        <item name="material_dialog_background">#FFFFFF</item>
+        <item name="material_dialog_title_text_color">#000000</item>
+        <item name="material_dialog_message_text_color">#5F5F5F</item>
+        <item name="material_dialog_positive_button_color">@color/colorAccent</item>
+        <item name="material_dialog_positive_button_text_color">#FFFFFF</item>
+        <item name="material_dialog_negative_button_text_color">@color/colorAccent</item>
+
+
     </style>
 
 </resources>
