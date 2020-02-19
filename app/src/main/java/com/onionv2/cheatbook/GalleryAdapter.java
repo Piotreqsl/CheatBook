@@ -29,7 +29,7 @@ import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHolder> implements ItemTouchHelperAdapter {
 
-    public static List<Uri> images;
+    public  List<Uri> images;
     private Context mContext;
 
     @Override
@@ -58,7 +58,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
     public GalleryAdapter(Context context, List<Uri> images) {
         mContext = context;
         this.images = images;
-        Log.d("hhhh", String.valueOf(images));
     }
 
     @Override

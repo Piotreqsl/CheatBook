@@ -40,7 +40,7 @@ import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button grid;
+
     final int callbackPerm = 2;
 
 

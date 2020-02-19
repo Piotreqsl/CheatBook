@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -35,7 +36,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.File;
 import java.util.ArrayList;
 
-public class GridActivity extends AppCompatActivity {
+public class GridActivity extends AppCompatActivity implements OnStartDragListener {
     private static final int PICK_IMAGES = 2;
     FloatingActionButton fab;
 
@@ -49,6 +50,9 @@ public class GridActivity extends AppCompatActivity {
     private GalleryAdapter mAdapter;
     private RecyclerView recyclerView;
 
+    private ItemTouchHelper mItemTouchHelper;
+
+
 
 
 
@@ -61,7 +65,7 @@ public class GridActivity extends AppCompatActivity {
 
         images = new ArrayList<>();
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        final DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
         Bundle bundle = getIntent().getExtras();
         subject = bundle.getString("subj");
@@ -70,8 +74,9 @@ public class GridActivity extends AppCompatActivity {
         timestamp = bundle.getString("timestamp");
 
 
-        int counter = 0;
 
+        //Removing not valid imgs
+        int counter = 0;
         for(int i = 0; i < bundle.getString("uris").split("__,__").length; i++ ){
             File file = new File(bundle.getString("uris").split("__,__")[i]);
 
@@ -82,7 +87,6 @@ public class GridActivity extends AppCompatActivity {
                 counter++;
             }
         }
-
         if(counter != 0){
             StringBuilder stringBuilder = new StringBuilder();
             for(int i =0; i < images.size(); i++){
@@ -105,14 +109,16 @@ public class GridActivity extends AppCompatActivity {
 
 
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
-        toolbar.setTitle(subject + ": " + title);
-        setSupportActionBar(toolbar);
+
 
 
         mAdapter = new GalleryAdapter(getApplicationContext(), images);
 
         recyclerView =  findViewById(R.id.recycler_view);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
 
 
 
@@ -122,6 +128,29 @@ public class GridActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
+
+        mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+
+
+                StringBuilder stringBuilder = new StringBuilder();
+                for(int i =0; i < images.size(); i++){
+                    stringBuilder.append(images.get(i) + "__,__");
+                }
+                Cheat fixedCheat = new Cheat();
+                fixedCheat.setTitle(title);
+                fixedCheat.setUris(stringBuilder.toString());
+                fixedCheat.setSubject(subject);
+                fixedCheat.setId(id);
+                fixedCheat.setTimestamp(timestamp);
+
+                databaseHelper.updateCheat(fixedCheat);
+            }
+        });
+
         recyclerView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(getApplicationContext(), recyclerView, new GalleryAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -129,10 +158,10 @@ public class GridActivity extends AppCompatActivity {
                 bundle.putSerializable("images", images);
                 bundle.putInt("position", position);
 
+
                 Intent intent = new Intent(GridActivity.this, CameraActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
-
             }
 
             @Override
@@ -144,10 +173,8 @@ public class GridActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+    }
 }

@@ -13,3 +13,5 @@
         android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
 </com.onionv2.cheatbook.SquareLayout>
+
+
