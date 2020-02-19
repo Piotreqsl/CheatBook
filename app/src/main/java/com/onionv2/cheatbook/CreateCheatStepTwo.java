@@ -85,8 +85,6 @@ public class CreateCheatStepTwo extends AppCompatActivity implements OnStartDrag
 
 
 
-        Toolbar toolbar =  findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         recyclerView =  findViewById(R.id.recycler_view);
 

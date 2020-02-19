@@ -47,7 +47,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
             imageView = itemView.findViewById(R.id.iconSingle);
             subjectText = itemView.findViewById(R.id.textSingle);
             countText = itemView.findViewById(R.id.subtextSingle);
-            dots = itemView.findViewById(R.id.menuVertical);
+            dots = itemView.findViewById(R.id.menu_vertical_home);
 
             dots.setOnClickListener(new View.OnClickListener() {
                 @Override
