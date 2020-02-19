@@ -9,7 +9,7 @@
         android:id="@+id/view_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_row_background">
+        android:background="@color/colorWhite">
 
         <ImageView
             android:id="@+id/delete_icon"
@@ -32,12 +32,23 @@
 
     </RelativeLayout>
 
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardview_id"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="20dp"
+        android:background="@color/colorGrey">
+
     <RelativeLayout
         android:id="@+id/view_foreground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:padding="@dimen/padd_10">
+        android:padding="@dimen/padd_10"
+        >
 
 
         <TextView
@@ -46,10 +57,10 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/activity_padding_horizontal"
             android:ellipsize="end"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/fieldbold"
             android:maxLines="1"
             android:textColor="@color/item_name"
-            android:textSize="17dp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/CheatDate"
@@ -60,6 +71,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/activity_padding_horizontal"
             android:textColor="@color/description"
+            android:fontFamily="@font/fieldhair"
             android:textSize="12dp" />
 
         <TextView
@@ -69,7 +81,9 @@
             android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/activity_padding_horizontal"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold" />
+            android:fontFamily="@font/fieldregular" />
 
     </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 </FrameLayout>

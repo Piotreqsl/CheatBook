@@ -179,12 +179,12 @@ public class MainActivity extends AppCompatActivity {
                 final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
 
                 final EditText edittext = new EditText(MainActivity.this);
-                alert.setMessage("Enter Your Message");
-                alert.setTitle("Enter Your Title");
+                alert.setMessage("No more than 20 characters");
+                alert.setTitle("Select name");
 
                 alert.setView(edittext);
 
-                alert.setPositiveButton("Yes Option", new android.content.DialogInterface.OnClickListener() {
+                alert.setPositiveButton("Create", new android.content.DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(android.content.DialogInterface dialog, int which) {
 
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                alert.setNegativeButton("No Option", new android.content.DialogInterface.OnClickListener() {
+                alert.setNegativeButton("Back", new android.content.DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(android.content.DialogInterface dialog, int which) {
 

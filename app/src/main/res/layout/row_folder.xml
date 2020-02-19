@@ -53,11 +53,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iconSingle"
                 android:layout_marginLeft="17dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/fieldbold"
                 android:text="Fridge"
                 android:textColor="@color/colorBlack"
-                android:textSize="32sp" />
+                android:textSize="24dp" />
 
             <TextView
             android:id="@+id/subtextSingle"
@@ -65,10 +65,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textSingle"
             android:layout_marginLeft="17dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="3dp"
             android:text="Fridge"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp"
+            android:textSize="16dp"
             android:fontFamily="@font/fieldlight"/>
 
 
