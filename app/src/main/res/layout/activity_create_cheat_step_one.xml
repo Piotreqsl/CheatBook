@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreateCheatStepOne"
-    android:id="@+id/constr">
+    android:id="@+id/constr"
+    android:background="@color/colorWhite">
 
 
     <EditText
@@ -20,21 +21,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:maxLines="1"
-        android:maxLength="35"/>
+        android:maxLength="30"
+        android:background="@drawable/bg_white_rounded"
+        android:fontFamily="@font/fieldregular" />
 
     <Button
         android:id="@+id/material_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/fieldregular"
         android:text="Next"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:strokeColor="#009E2A2A" />
+        app:strokeColor="#009E2A2A"
+        android:textColor="@color/colorWhite"
+        />
 
     <TextView
         android:id="@+id/textView"
@@ -44,7 +49,10 @@
         android:text="Select title"
         app:layout_constraintBottom_toTopOf="@+id/edit_text_title"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/fieldbold"
+        android:textSize="32sp"
+        android:textColor="@color/colorBlack"/>
 
     <TextView
         android:id="@+id/textView2"

@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogStyle);
 
                 final EditText edittext = new EditText(MainActivity.this);
                 alert.setMessage("No more than 20 characters");
