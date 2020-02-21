@@ -84,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
             helperListItem.add(cursor.getString(1) + "__,__" + cursor.getInt(2));
         }
 
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+            }
+        });
 
 
 
@@ -120,54 +126,57 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDotsClick(final int position, View v) {
 
+                    if(helperListItem.size() == mAdapter.getItemCount()) {
 
-                PopupMenu popup = new PopupMenu(MainActivity.this, v);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
+                        PopupMenu popup = new PopupMenu(MainActivity.this, v);
+                        //Inflating the Popup using xml file
+                        popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu());
 
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(MainActivity.this)
-                                .setTitle("Delete?")
-                                .setMessage("Are you sure want to delete this file?")
-                                .setCancelable(false)
-                                .setPositiveButton("Delete", R.drawable.ic_delete, new BottomSheetMaterialDialog.OnClickListener() {
-                                    @Override ///// TUTAJ JEST DELETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                                    public void onClick(DialogInterface dialogInterface, int which) {
+                        //registering popup with OnMenuItemClickListener
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            public boolean onMenuItemClick(MenuItem item) {
+                                BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(MainActivity.this)
+                                        .setTitle("Delete?")
+                                        .setMessage("Are you sure want to delete this file?")
+                                        .setCancelable(false)
+                                        .setPositiveButton("Delete", R.drawable.ic_delete, new BottomSheetMaterialDialog.OnClickListener() {
+                                            @Override
+                                            ///// TUTAJ JEST DELETE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                            public void onClick(DialogInterface dialogInterface, int which) {
 
-                                        databaseHelper.deleteCheatBySubject(mAdapter.getSubjectByPos(position));
-                                        subjectHelper.deleteSubject(mAdapter.getSubjectByPos(position));
+                                                databaseHelper.deleteCheatBySubject(mAdapter.getSubjectByPos(position));
+                                                subjectHelper.deleteSubject(mAdapter.getSubjectByPos(position));
 
+                                                String test = mAdapter.getSubjectByPos(position);
+                                                mAdapter.removeItem(position);
 
-                                        mAdapter.removeItem(position);
-
-
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .setNegativeButton("Cancel", R.drawable.ic_close, new BottomSheetMaterialDialog.OnClickListener() {
-                                    @Override // tutaj jest cancel
-                                    public void onClick(DialogInterface dialogInterface, int which) {
-                                        Toast.makeText(getApplicationContext(), "Cancelled!", Toast.LENGTH_SHORT).show();
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .build();
-
-                        // Show Dialog
-                        mBottomSheetDialog.show();
+                                                listItem.remove(test);
+                                                helperListItem.remove(test);
 
 
+                                                dialogInterface.dismiss();
+                                            }
+                                        })
+                                        .setNegativeButton("Cancel", R.drawable.ic_close, new BottomSheetMaterialDialog.OnClickListener() {
+                                            @Override // tutaj jest cancel
+                                            public void onClick(DialogInterface dialogInterface, int which) {
+                                                Toast.makeText(getApplicationContext(), "Cancelled!", Toast.LENGTH_SHORT).show();
+                                                dialogInterface.dismiss();
+                                            }
+                                        })
+                                        .build();
+
+                                // Show Dialog
+                                mBottomSheetDialog.show();
 
 
-                        return true;
+                                return true;
+                            }
+                        });
+
+
+                        popup.show();
                     }
-                });
-
-                popup.show();
-
-
             }
         });
 
@@ -242,6 +251,8 @@ public class MainActivity extends AppCompatActivity {
                     listItem.clear();
                     listItem.addAll(helperListItem);
                     mAdapter.notifyDataSetChanged();
+                    addFab.show();
+
                 }
 
                 else {
@@ -250,15 +261,14 @@ public class MainActivity extends AppCompatActivity {
                     listItem.clear();
                     listItem.addAll(filtered);
                     mAdapter.notifyDataSetChanged();
+                    addFab.hide();
+
                 }
 
 
                 return true;
             }
         });
-
-        //debug only
-
     }
 
     @Override

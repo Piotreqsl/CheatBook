@@ -28,8 +28,6 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         void onDotsClick(int position, View v);
 
         void onItemClick(int position);
-
-
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -337,5 +335,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
 
     public String getSubjectByPos(int i) {return mExampleList.get(i).split("__,__")[0];}
+
+
 
 }
