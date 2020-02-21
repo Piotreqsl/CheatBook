@@ -11,6 +11,8 @@
         android:gravity="center"
         android:text="Test"
         android:textAlignment="center"
-        android:textSize="36sp" />
+        android:textSize="36sp"
+        android:fontFamily="@font/fieldbold"
+        android:textColor="@color/colorWhite"/>
 
 </merge>
