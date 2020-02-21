@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
                 final AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogStyle);
 
                 final EditText edittext = new EditText(MainActivity.this);
+                edittext.setTextColor(Color.WHITE);
                 alert.setMessage("No more than 20 characters");
                 alert.setTitle("Select name");
 
@@ -216,9 +217,6 @@ public class MainActivity extends AppCompatActivity {
                 alert.setNegativeButton("Back", new android.content.DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(android.content.DialogInterface dialog, int which) {
-
-
-
                     }
                 });
 
