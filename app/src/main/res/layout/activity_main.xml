@@ -50,7 +50,7 @@
             android:layout_height="35dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="15dp"
             android:background="?attr/selectableItemBackgroundBorderless"
 
@@ -63,7 +63,7 @@
             android:layout_height="35dp"
             android:src="@drawable/shop"
             android:layout_toLeftOf="@id/workshop"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:layout_marginRight="20dp"
             android:scaleType="fitCenter"
             android:background="?attr/selectableItemBackgroundBorderless"
