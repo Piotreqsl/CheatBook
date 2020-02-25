@@ -2,6 +2,7 @@ package com.onionv2.cheatbook;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
@@ -72,6 +73,9 @@ public class CreateCheatStepTwo extends AppCompatActivity implements OnStartDrag
         final DatabaseHelper databaseHelper = new DatabaseHelper(this);
         final SubjectHelper subjectHelper = new SubjectHelper(this);
 
+        AppCompatTextView appCompatTextView = findViewById(R.id.headerText);
+        appCompatTextView.setText("Select images");
+
 
 
         fab = findViewById(R.id.addFabCreateImage);
@@ -81,11 +85,6 @@ public class CreateCheatStepTwo extends AppCompatActivity implements OnStartDrag
                 openGallery();
             }
         });
-
-
-
-
-
         recyclerView =  findViewById(R.id.recycler_view);
 
 
@@ -108,7 +107,6 @@ public class CreateCheatStepTwo extends AppCompatActivity implements OnStartDrag
         recyclerView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(getApplicationContext(), recyclerView, new GalleryAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(getApplicationContext(), position + "hej", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -190,14 +188,14 @@ public class CreateCheatStepTwo extends AppCompatActivity implements OnStartDrag
 
                 for (int i = 0; i < clipData.getItemCount(); i++) {
                     ClipData.Item item = clipData.getItemAt(i);
-                    Uri uri = getImagePath(item.getUri());
+                    Uri uri = Uri.parse(getPath(getApplicationContext(),item.getUri()));
 
                     images.add(uri);
                 }
 
             }else if (data.getData() != null){
 
-                images.add(getImagePath(data.getData()));
+                images.add(Uri.parse(getPath(getApplicationContext() ,data.getData())));
             }
 
             mAdapter.notifyDataSetChanged();
@@ -208,22 +206,68 @@ public class CreateCheatStepTwo extends AppCompatActivity implements OnStartDrag
 
 
 
-    private Uri getImagePath(Uri uri){
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        String document_id = cursor.getString(0);
-        document_id = document_id.substring(document_id.lastIndexOf(":")+1);
-        cursor.close();
-
-        cursor = getContentResolver().query(
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-        cursor.close();
-
-        return Uri.parse(path);
+    public static String getPath(final Context context, final Uri uri) {
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        Log.i("URI",uri+"");
+        String result = uri+"";
+        // DocumentProvider
+        //  if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+        if (isKitKat && (result.contains("media.documents"))) {
+            String[] ary = result.split("/");
+            int length = ary.length;
+            String imgary = ary[length-1];
+            final String[] dat = imgary.split("%3A");
+            final String docId = dat[1];
+            final String type = dat[0];
+            Uri contentUri = null;
+            if ("image".equals(type)) {
+                contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            } else if ("video".equals(type)) {
+            } else if ("audio".equals(type)) {
+            }
+            final String selection = "_id=?";
+            final String[] selectionArgs = new String[] {
+                    dat[1]
+            };
+            return getDataColumn(context, contentUri, selection, selectionArgs);
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
     }
+
+    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {
+                column
+        };
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     @Override

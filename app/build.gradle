@@ -39,6 +39,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation("com.google.guava:guava:28.2-android")
 
+
     // Material Dialog Library
     implementation 'com.shreyaspatil:MaterialDialog:2.1'
 

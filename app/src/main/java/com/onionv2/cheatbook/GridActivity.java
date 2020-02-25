@@ -2,6 +2,7 @@ package com.onionv2.cheatbook;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
@@ -105,6 +106,9 @@ public class GridActivity extends AppCompatActivity implements OnStartDragListen
 
         }
 
+
+        AppCompatTextView appCompatTextView = findViewById(R.id.headerText);
+        appCompatTextView.setText(subject + ": " + title);
 
 
 

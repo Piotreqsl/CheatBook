@@ -1,6 +1,7 @@
 package com.onionv2.cheatbook;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -47,6 +48,9 @@ public class SubjectCheats extends AppCompatActivity implements RecyclerItemTouc
         coordinatorLayout = findViewById(R.id.coordinator_subject);
 
         addFab = findViewById(R.id.addCheatFab);
+
+        AppCompatTextView appCompatTextView = findViewById(R.id.headerText);
+        appCompatTextView.setText(subject);
 
 
 

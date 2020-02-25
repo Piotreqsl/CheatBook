@@ -26,6 +26,7 @@ public class CreateCheatStepOne extends AppCompatActivity {
     EditText editText;
     Button button;
     ConstraintLayout constraintLayout;
+    BroadcastReceiver broadcast_reciever;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +76,14 @@ public class CreateCheatStepOne extends AppCompatActivity {
             }
         });
 
-        BroadcastReceiver broadcast_reciever = new BroadcastReceiver() {
+         broadcast_reciever = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context arg0, Intent intent) {
                 String action = intent.getAction();
                 if (action.equals("finish")) {
                     finish();
+                    unregisterReceiver(broadcast_reciever);
                 }
             }
         };
