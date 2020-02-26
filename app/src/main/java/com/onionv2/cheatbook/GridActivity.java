@@ -32,6 +32,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -54,7 +60,8 @@ public class GridActivity extends AppCompatActivity implements OnStartDragListen
     private ItemTouchHelper mItemTouchHelper;
 
 
-
+    InterstitialAd mInterstitialAd;
+    AdView mAdView;
 
 
 
@@ -73,6 +80,16 @@ public class GridActivity extends AppCompatActivity implements OnStartDragListen
         title = bundle.getString("title");
         id = bundle.getInt("id");
         timestamp = bundle.getString("timestamp");
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
 
 
 
@@ -113,6 +130,13 @@ public class GridActivity extends AppCompatActivity implements OnStartDragListen
 
 
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-9541882283543234/3900836273");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
 
@@ -163,9 +187,12 @@ public class GridActivity extends AppCompatActivity implements OnStartDragListen
                 bundle.putInt("position", position);
 
 
+
                 Intent intent = new Intent(GridActivity.this, CameraActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+
+                if(mInterstitialAd.isLoaded()) mInterstitialAd.show();
             }
 
             @Override

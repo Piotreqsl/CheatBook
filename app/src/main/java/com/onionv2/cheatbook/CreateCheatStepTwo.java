@@ -34,6 +34,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -55,10 +60,20 @@ public class CreateCheatStepTwo extends AppCompatActivity implements OnStartDrag
 
     private ItemTouchHelper mItemTouchHelper;
 
+    InterstitialAd mInterstitialAd;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-9541882283543234/3900836273");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 
         super.onCreate(savedInstanceState);
@@ -68,7 +83,7 @@ public class CreateCheatStepTwo extends AppCompatActivity implements OnStartDrag
         subject = bundle.getString("subj");
         title = bundle.getString("title");
 
-        Log.d("tagg", subject + title + "hej ");
+        Log.d("tagg", subject + title + "hej");
 
         final DatabaseHelper databaseHelper = new DatabaseHelper(this);
         final SubjectHelper subjectHelper = new SubjectHelper(this);
@@ -148,6 +163,8 @@ public class CreateCheatStepTwo extends AppCompatActivity implements OnStartDrag
                     SubjectCheats.cheatList.clear();
                     SubjectCheats.getCheats();
 
+
+                    if(mInterstitialAd.isLoaded()) mInterstitialAd.show();
 
                     finish();
 

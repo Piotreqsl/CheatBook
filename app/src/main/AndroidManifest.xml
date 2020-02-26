@@ -11,7 +11,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Cheat book"
+        android:label="CheatBook"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -20,6 +20,10 @@
         <activity
             android:name=".CreateCheatStepOne"
             android:windowSoftInputMode="adjustResize" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9541882283543234~1013645023"/>
+
         <activity android:name=".SubjectCheats" />
         <activity android:name=".GridActivity" />
         <activity android:name=".CameraActivity" />

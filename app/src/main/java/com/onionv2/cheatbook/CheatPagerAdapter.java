@@ -57,6 +57,7 @@ public class CheatPagerAdapter extends PagerAdapter {
                 .into(photoView);
         container.addView(photoView);
         return photoView;
+
     }
 
     @Override
